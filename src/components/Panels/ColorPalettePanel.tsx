@@ -31,26 +31,26 @@ export function ColorPalettePanel() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="px-3 py-2 border-b border-gray-100 flex items-center justify-between">
-        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Colors</span>
+      <div className="px-3 py-2 border-b border-warm-line flex items-center justify-between">
+        <span className="text-xs font-semibold text-warm-faint uppercase tracking-widest">Colors</span>
         <button
           onClick={() => setShowPicker(v => !v)}
-          className="text-xs px-2 py-0.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded font-medium"
+          className="text-xs px-2 py-0.5 bg-studio-light hover:bg-studio/20 text-studio rounded-md font-medium transition-colors"
         >
           + Add
         </button>
       </div>
 
-      <div className="flex flex-wrap gap-1.5 p-2 border-b border-gray-100">
+      <div className="flex flex-wrap gap-1.5 p-2.5 border-b border-warm-line">
         {palette.length === 0 && (
-          <p className="text-xs text-gray-400 w-full text-center py-2">No colors yet — click Add</p>
+          <p className="text-xs text-warm-faint w-full text-center py-2">No colors yet — click Add</p>
         )}
         {palette.map(color => (
           <div
             key={color.id}
             title={`${color.brand.toUpperCase()} ${color.threadNumber} — ${color.name}\nSymbol: ${color.symbol}`}
-            className={`relative w-8 h-8 rounded cursor-pointer flex items-center justify-center text-xs font-bold transition-transform hover:scale-110 ${
-              activeColorId === color.id ? 'ring-2 ring-blue-500 ring-offset-1' : ''
+            className={`relative w-8 h-8 rounded-lg cursor-pointer flex items-center justify-center text-xs font-bold transition-transform hover:scale-110 ${
+              activeColorId === color.id ? 'ring-2 ring-studio ring-offset-1' : ''
             }`}
             style={{ backgroundColor: color.hex, color: contrastColor(color.hex) }}
             onClick={() => setActiveColorId(color.id)}
@@ -65,25 +65,28 @@ export function ColorPalettePanel() {
         const active = palette.find(c => c.id === activeColorId);
         if (!active) return null;
         return (
-          <div className="px-3 py-2 border-b border-gray-100 text-xs text-gray-600">
+          <div className="px-3 py-2 border-b border-warm-line text-xs text-warm-stone">
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded" style={{ backgroundColor: active.hex }} />
-              <span className="font-medium">{active.brand.toUpperCase()} {active.threadNumber}</span>
+              <div
+                className="w-4 h-4 rounded-md flex-shrink-0"
+                style={{ backgroundColor: active.hex, boxShadow: '0 0 0 1px rgba(0,0,0,0.1)' }}
+              />
+              <span className="font-medium text-ink">{active.brand.toUpperCase()} {active.threadNumber}</span>
             </div>
-            <div className="text-gray-400 mt-0.5">{active.name}</div>
+            <div className="text-warm-faint mt-0.5 ml-6">{active.name}</div>
           </div>
         );
       })()}
 
       {showPicker && (
         <div className="flex flex-col min-h-0 flex-1">
-          <div className="px-2 py-2 border-b border-gray-100 space-y-1.5">
+          <div className="px-2 py-2 border-b border-warm-line space-y-1.5">
             <input
               type="text"
               placeholder="Search by number or name…"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full text-xs border border-gray-200 rounded px-2 py-1 focus:outline-none focus:border-blue-400"
+              className="w-full text-xs border border-warm-line rounded-md px-2 py-1.5 bg-linen/40 focus:outline-none focus:border-studio focus:ring-1 focus:ring-studio/20 placeholder:text-warm-faint transition-all"
               autoFocus
             />
             <div className="flex gap-1">
@@ -91,8 +94,10 @@ export function ColorPalettePanel() {
                 <button
                   key={b}
                   onClick={() => setBrandFilter(b)}
-                  className={`text-xs px-2 py-0.5 rounded font-medium ${
-                    brandFilter === b ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600'
+                  className={`text-xs px-2 py-0.5 rounded-md font-medium transition-colors ${
+                    brandFilter === b
+                      ? 'bg-studio text-white'
+                      : 'bg-warm-surface text-warm-stone hover:text-ink'
                   }`}
                 >
                   {b === 'all' ? 'All' : b.toUpperCase()}
@@ -104,7 +109,7 @@ export function ColorPalettePanel() {
             {filtered.map(c => (
               <button
                 key={c.id}
-                className="w-full flex items-center gap-2 px-2 py-1 hover:bg-gray-50 text-left"
+                className="w-full flex items-center gap-2 px-2 py-1.5 hover:bg-warm-surface/50 text-left transition-colors"
                 onClick={() => {
                   const alreadyIn = palette.find(p => p.brand === c.brand && p.threadNumber === c.number);
                   if (alreadyIn) {
@@ -116,10 +121,13 @@ export function ColorPalettePanel() {
                   setSearch('');
                 }}
               >
-                <div className="w-5 h-5 rounded flex-shrink-0 border border-gray-200" style={{ backgroundColor: c.hex }} />
-                <span className="text-xs font-medium text-gray-700 w-12 flex-shrink-0">{c.number}</span>
-                <span className="text-xs text-gray-500 truncate">{c.name}</span>
-                <span className="text-xs text-gray-300 ml-auto flex-shrink-0">{c.brand.toUpperCase()}</span>
+                <div
+                  className="w-5 h-5 rounded-md flex-shrink-0"
+                  style={{ backgroundColor: c.hex, boxShadow: '0 0 0 1px rgba(0,0,0,0.08)' }}
+                />
+                <span className="text-xs font-medium text-ink w-12 flex-shrink-0">{c.number}</span>
+                <span className="text-xs text-warm-stone truncate">{c.name}</span>
+                <span className="text-xs text-warm-faint ml-auto flex-shrink-0">{c.brand.toUpperCase()}</span>
               </button>
             ))}
           </div>

@@ -8,8 +8,8 @@ export function StitchPanel() {
 
   return (
     <div className="flex flex-col">
-      <div className="px-3 py-2 border-b border-gray-100">
-        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Stitch Type</span>
+      <div className="px-3 py-2 border-b border-warm-line">
+        <span className="text-xs font-semibold text-warm-faint uppercase tracking-widest">Stitch Type</span>
       </div>
       <div className="p-2 flex flex-col gap-1">
         {STITCHES.map(stitch => (
@@ -17,18 +17,18 @@ export function StitchPanel() {
             key={stitch.type}
             title={stitch.description}
             onClick={() => setActiveStitch(stitch.type)}
-            className={`flex items-center gap-2 px-2 py-1.5 rounded text-left transition-colors ${
+            className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left transition-all ${
               activeStitch === stitch.type
-                ? 'bg-purple-600 text-white'
-                : 'bg-gray-50 hover:bg-gray-100 text-gray-700'
+                ? 'bg-thread text-white'
+                : 'hover:bg-warm-surface text-warm-stone hover:text-ink'
             }`}
           >
             <span
-              className="w-6 h-6 rounded text-xs font-bold flex items-center justify-center flex-shrink-0"
+              className="w-6 h-6 rounded-md text-xs font-bold flex items-center justify-center flex-shrink-0"
               style={
                 activeColor
                   ? { backgroundColor: activeColor.hex, color: contrastColor(activeColor.hex) }
-                  : { backgroundColor: '#ddd', color: '#555' }
+                  : { backgroundColor: '#ddd', color: '#6B5F58' }
               }
             >
               {stitch.symbol}

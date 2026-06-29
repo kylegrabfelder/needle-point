@@ -43,37 +43,44 @@ export function AppShell() {
     { id: 'export', label: 'Export' },
   ];
 
+  const header = (
+    <header className="bg-ink text-white px-5 py-3 flex items-center gap-2.5 flex-shrink-0">
+      <span className="font-serif text-thread text-xl leading-none select-none">×</span>
+      <span className="font-serif text-base tracking-tight text-white/95">Needle Point</span>
+      {project && (
+        <>
+          <span className="text-white/25 text-sm ml-0.5">·</span>
+          <span className="text-white/55 text-sm truncate max-w-48">{project.title}</span>
+        </>
+      )}
+    </header>
+  );
+
   if (!project) {
     return (
-      <div className="flex flex-col h-screen bg-gray-50">
-        <header className="bg-rose-700 text-white px-4 py-2 flex items-center gap-3 flex-shrink-0 shadow">
-          <span className="font-semibold text-sm tracking-wide">Needle Point Designer</span>
-        </header>
+      <div className="flex flex-col h-screen bg-linen">
+        {header}
         <HomeScreen />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      <header className="bg-rose-700 text-white px-4 py-2 flex items-center gap-3 flex-shrink-0 shadow">
-        <span className="font-semibold text-sm tracking-wide">Needle Point Designer</span>
-        <span className="text-rose-200 text-xs">{project.title}</span>
-      </header>
-
+    <div className="flex flex-col h-screen bg-linen">
+      {header}
       <Toolbar />
 
       <div className="flex flex-1 min-h-0">
-        <div className="w-64 flex-shrink-0 bg-white border-r border-gray-200 flex flex-col">
-          <div className="flex border-b border-gray-200">
+        <div className="w-64 flex-shrink-0 bg-white border-r border-warm-line flex flex-col">
+          <div className="flex p-1 gap-px bg-warm-surface border-b border-warm-line">
             {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActivePanel(tab.id)}
-                className={`flex-1 py-1.5 text-xs font-medium transition-colors ${
+                className={`flex-1 py-1.5 text-xs font-medium rounded transition-all ${
                   activePanel === tab.id
-                    ? 'bg-white text-gray-900 border-b-2 border-blue-600'
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                    ? 'bg-white text-ink shadow-sm'
+                    : 'text-warm-stone hover:text-ink'
                 }`}
               >
                 {tab.label}

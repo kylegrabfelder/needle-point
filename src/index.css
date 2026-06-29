@@ -1,4 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --color-linen: #F5F1EB;
+  --color-warm-surface: #EDE9E2;
+  --color-warm-line: #DDD8D0;
+  --color-studio: #2D6B5E;
+  --color-studio-dark: #1E4D43;
+  --color-studio-light: #EBF4F1;
+  --color-thread: #B8706A;
+  --color-thread-light: #F7EFEE;
+  --color-ink: #1A1714;
+  --color-warm-stone: #6B5F58;
+  --color-warm-faint: #A09590;
+  --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+}
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -7,7 +24,8 @@
 body {
   margin: 0;
   overflow: hidden;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
 #root {

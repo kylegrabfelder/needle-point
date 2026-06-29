@@ -4,6 +4,15 @@ import type { MeshCount, Project } from '../../types';
 
 const MESH_COUNTS: MeshCount[] = [10, 13, 14, 18, 24];
 
+const THREAD_SPECTRUM = [
+  '#C82626', '#D4432E', '#E05C38', '#E87B3A', '#F09A2C',
+  '#F5C025', '#E8D040', '#C8D450', '#9EC855', '#6CB33F',
+  '#3D9E4A', '#1E8855', '#1A7A62', '#217070', '#2A8080',
+  '#3498B8', '#3D7FC5', '#3E5FB0', '#5050A8', '#7050A0',
+  '#9A50A0', '#B850A0', '#C85898', '#D05880', '#D06878',
+  '#E0909A', '#A87060', '#886050',
+];
+
 export function HomeScreen() {
   const { createProject, loadProject } = useProjectStore();
   const [savedProjects, setSavedProjects] = useState<Project[]>([]);
@@ -48,26 +57,34 @@ export function HomeScreen() {
   const cellCount = Math.round(widthIn * meshCount) * Math.round(heightIn * meshCount);
 
   return (
-    <div className="flex-1 overflow-y-auto bg-gray-50 flex flex-col items-center py-10 px-4">
+    <div className="flex-1 overflow-y-auto bg-linen flex flex-col items-center py-10 px-4">
       <div className="w-full max-w-2xl space-y-8">
 
-        {/* Header */}
+        {/* Thread spectrum — the signature element */}
         <div>
-          <h1 className="text-2xl font-semibold text-gray-800">Needle Point Designer</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Design needlepoint patterns with real DMC thread colors.
+          <div
+            className="h-5 flex overflow-hidden rounded-xl mb-6"
+            style={{ boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.07)' }}
+          >
+            {THREAD_SPECTRUM.map((hex, i) => (
+              <div key={i} style={{ backgroundColor: hex, flex: 1 }} />
+            ))}
+          </div>
+          <h1 className="font-serif text-3xl text-ink leading-tight">Design your pattern</h1>
+          <p className="text-sm text-warm-stone mt-2">
+            Real DMC and Anchor thread colors. Export to PDF when you're ready to stitch.
           </p>
         </div>
 
         {/* New project form */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4 uppercase tracking-wide">New Project</h2>
+        <div className="bg-white rounded-2xl border border-warm-line p-6">
+          <h2 className="text-xs font-semibold text-warm-faint uppercase tracking-widest mb-5">New Project</h2>
 
           <div className="space-y-4">
             <div>
-              <label className="text-xs text-gray-600 mb-1 block font-medium">Project Name</label>
+              <label className="text-xs text-warm-stone mb-1.5 block font-medium">Pattern name</label>
               <input
-                className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-200"
+                className="w-full text-sm border border-warm-line rounded-lg px-3 py-2.5 bg-linen/40 focus:outline-none focus:border-studio focus:ring-2 focus:ring-studio/20 placeholder:text-warm-faint transition-all"
                 placeholder="e.g. Floral Pillow"
                 value={title}
                 onChange={e => setTitle(e.target.value)}
@@ -76,16 +93,16 @@ export function HomeScreen() {
             </div>
 
             <div>
-              <label className="text-xs text-gray-600 mb-1 block font-medium">Mesh Count (threads per inch)</label>
+              <label className="text-xs text-warm-stone mb-1.5 block font-medium">Mesh count (threads per inch)</label>
               <div className="flex gap-2 flex-wrap">
                 {MESH_COUNTS.map(m => (
                   <button
                     key={m}
                     onClick={() => setMeshCount(m)}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                       meshCount === m
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                        ? 'bg-studio text-white shadow-sm'
+                        : 'bg-warm-surface hover:bg-warm-line text-warm-stone'
                     }`}
                   >
                     {m}-count
@@ -96,51 +113,52 @@ export function HomeScreen() {
 
             <div className="flex gap-3">
               <div className="flex-1">
-                <label className="text-xs text-gray-600 mb-1 block font-medium">Width (inches)</label>
+                <label className="text-xs text-warm-stone mb-1.5 block font-medium">Width (inches)</label>
                 <input
                   type="number" min="1" max="30" step="0.5"
-                  className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400"
+                  className="w-full text-sm border border-warm-line rounded-lg px-3 py-2.5 bg-linen/40 focus:outline-none focus:border-studio focus:ring-2 focus:ring-studio/20 transition-all"
                   value={widthIn}
                   onChange={e => setWidthIn(Number(e.target.value))}
                 />
               </div>
               <div className="flex-1">
-                <label className="text-xs text-gray-600 mb-1 block font-medium">Height (inches)</label>
+                <label className="text-xs text-warm-stone mb-1.5 block font-medium">Height (inches)</label>
                 <input
                   type="number" min="1" max="30" step="0.5"
-                  className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-400"
+                  className="w-full text-sm border border-warm-line rounded-lg px-3 py-2.5 bg-linen/40 focus:outline-none focus:border-studio focus:ring-2 focus:ring-studio/20 transition-all"
                   value={heightIn}
                   onChange={e => setHeightIn(Number(e.target.value))}
                 />
               </div>
             </div>
 
-            <div className="text-xs text-gray-400 bg-gray-50 rounded-lg px-3 py-2">
-              {Math.round(widthIn * meshCount)} × {Math.round(heightIn * meshCount)} cells
-              ({cellCount.toLocaleString()} stitches total)
+            <div className="text-xs text-warm-faint bg-warm-surface rounded-lg px-3 py-2.5 flex items-center gap-2">
+              <span>{Math.round(widthIn * meshCount)} × {Math.round(heightIn * meshCount)} stitches</span>
+              <span className="text-warm-line">·</span>
+              <span>{cellCount.toLocaleString()} cells total</span>
             </div>
 
             <button
               onClick={handleCreate}
               disabled={!title.trim()}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white text-sm py-2.5 rounded-lg font-semibold transition-colors"
+              className="w-full bg-studio hover:bg-studio-dark disabled:opacity-40 text-white text-sm py-3 rounded-xl font-semibold transition-all shadow-sm hover:shadow disabled:cursor-not-allowed"
             >
-              Create Project
+              Start stitching
             </button>
           </div>
         </div>
 
         {/* Import */}
         <div className="flex items-center gap-3">
-          <div className="flex-1 border-t border-gray-200" />
-          <span className="text-xs text-gray-400">or</span>
-          <div className="flex-1 border-t border-gray-200" />
+          <div className="flex-1 border-t border-warm-line" />
+          <span className="text-xs text-warm-faint">or open existing</span>
+          <div className="flex-1 border-t border-warm-line" />
         </div>
 
         <label className="block cursor-pointer">
-          <div className="border-2 border-dashed border-gray-200 hover:border-blue-300 rounded-xl p-4 text-center transition-colors">
-            <p className="text-sm text-gray-500 font-medium">Open a .needle file</p>
-            <p className="text-xs text-gray-400 mt-0.5">Click to browse</p>
+          <div className="border-2 border-dashed border-warm-line hover:border-studio/50 hover:bg-studio-light/30 rounded-2xl p-5 text-center transition-all">
+            <p className="text-sm text-warm-stone font-medium">Open a .needle file</p>
+            <p className="text-xs text-warm-faint mt-0.5">Click to browse</p>
           </div>
           <input type="file" accept=".needle,.json" onChange={handleImport} className="hidden" />
         </label>
@@ -148,7 +166,7 @@ export function HomeScreen() {
         {/* Saved projects */}
         {savedProjects.length > 0 && (
           <div>
-            <h2 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">Recent Projects</h2>
+            <h2 className="text-xs font-semibold text-warm-faint uppercase tracking-widest mb-3">Recent</h2>
             <div className="space-y-2">
               {savedProjects.map(project => {
                 const updated = new Date(project.updatedAt);
@@ -161,39 +179,40 @@ export function HomeScreen() {
                   <div
                     key={project.id}
                     onClick={() => handleOpen(project)}
-                    className="bg-white border border-gray-200 rounded-xl px-4 py-3 flex items-center gap-3 cursor-pointer hover:border-blue-300 hover:shadow-sm transition-all group"
+                    className="bg-white border border-warm-line rounded-xl px-4 py-3 flex items-center gap-3 cursor-pointer hover:border-studio/40 hover:shadow-sm transition-all group"
                   >
-                    {/* Color preview */}
-                    <div className="flex-shrink-0 flex gap-0.5">
+                    <div className="flex-shrink-0 flex gap-px rounded-md overflow-hidden">
                       {project.palette.slice(0, 6).map(c => (
                         <div
                           key={c.id}
-                          className="w-3 h-8 rounded-sm"
+                          className="w-2.5 h-9"
                           style={{ backgroundColor: c.hex }}
                         />
                       ))}
                       {project.palette.length === 0 && (
-                        <div className="w-3 h-8 rounded-sm bg-gray-100" />
+                        <div className="w-2.5 h-9 bg-warm-surface rounded-md" />
                       )}
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <div className="font-medium text-sm text-gray-800 truncate">{project.title}</div>
-                      <div className="text-xs text-gray-400 mt-0.5">
+                      <div className="font-medium text-sm text-ink truncate">{project.title}</div>
+                      <div className="text-xs text-warm-faint mt-0.5">
                         {project.width}×{project.height} · {project.meshCount}-count ·{' '}
                         {(project.width / project.meshCount).toFixed(1)}"×{(project.height / project.meshCount).toFixed(1)}"
                       </div>
                     </div>
 
                     <div className="flex-shrink-0 text-right">
-                      <div className="text-xs text-gray-400">{dateLabel}</div>
-                      <div className="text-xs text-gray-300">{project.palette.length} color{project.palette.length !== 1 ? 's' : ''}</div>
+                      <div className="text-xs text-warm-stone">{dateLabel}</div>
+                      <div className="text-xs text-warm-faint mt-0.5">
+                        {project.palette.length} color{project.palette.length !== 1 ? 's' : ''}
+                      </div>
                     </div>
 
                     <button
                       onClick={e => handleDelete(e, project.id)}
                       title="Delete project"
-                      className="flex-shrink-0 opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-400 transition-all text-sm px-1"
+                      className="flex-shrink-0 opacity-0 group-hover:opacity-100 text-warm-faint hover:text-thread transition-all text-sm px-1"
                     >
                       ✕
                     </button>
